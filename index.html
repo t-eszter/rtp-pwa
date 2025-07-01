@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Minimal PWA</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="img/assets/icon-192.png" />
+    <style>
+      /* Critical CSS only */
+      body {
+        font-family: sans-serif;
+        margin: 2em;
+      }
+      button {
+        padding: 0.5em 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hello, offline world!</h1>
+    <p id="desc">This PWA is extremely lightweight and offline-ready.</p>
+    <button id="load-style">Make It Fancy</button>
+
+    <script>
+      // Register Service Worker
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js");
+      }
+
+      // Load external CSS on demand
+      function loadCSS(href) {
+        return new Promise((resolve, reject) => {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = href;
+          link.onload = () => resolve();
+          link.onerror = () => reject(`Failed to load CSS: ${href}`);
+          document.head.appendChild(link);
+        });
+      }
+
+      // Bind button to trigger style loading
+      document.getElementById("load-style").addEventListener("click", () => {
+        loadCSS("style/style.css").then(() => {
+          document.getElementById("desc").classList.add("fancy");
+        });
+      });
+    </script>
+  </body>
+</html>

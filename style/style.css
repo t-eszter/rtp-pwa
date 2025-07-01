@@ -1,0 +1,9 @@
+body {
+  background: #f0f0f0;
+  color: #222;
+}
+
+.fancy {
+  font-style: italic;
+  color: darkred;
+}
